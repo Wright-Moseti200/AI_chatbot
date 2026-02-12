@@ -15,10 +15,13 @@ async function main(){
     while (true){
          const userInput = readlineSync.question(colors.yellow("You: "));
         try{
-            const response = await chat.sendMessage({
+            const response = await chat.sendMessageStream({
                 message:userInput
             });
-            console.log(colors.green("Bot: ") + response.text);
+
+            for await (const chunk of response){
+                console.log(chunk.text);
+            }
         }
         catch(error){
             console.log(colors.red("Error: ") + error.message)
